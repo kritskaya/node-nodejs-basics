@@ -23,7 +23,7 @@ const filePath = fileURLToPath(import.meta.url);
 console.log(`Path to current file is ${filePath}`);
 
 const dirPath = dirname(filePath);
-console.log(`Path to current file is ${dirPath}`);
+console.log(`Path to current directory is ${dirPath}`);
 
 const myServer = createServer((_, res) => {
   res.end('Request accepted');
