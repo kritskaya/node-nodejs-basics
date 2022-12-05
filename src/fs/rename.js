@@ -1,9 +1,9 @@
 import { constants } from 'node:fs';
-import { access, rename } from 'node:fs/promises';
+import fs from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const renameFile = async () => {
+const rename = async () => {
   const FOLDER_NAME = 'files';
   const FILENAME = 'wrongFilename.txt';
   const NEW_FILENAME = 'properFilename.md';
@@ -20,22 +20,17 @@ const renameFile = async () => {
     NEW_FILENAME
   );
 
-  try {
-    await access(filePath, constants.F_OK);
-  } catch {
-    throw new Error('FS operation failed');
-  }
-
-  let result;
-  try {
-    result = await access(newFilePath, constants.F_OK);
-  } catch {
-    rename(filePath, newFilePath);
-  } finally {
-    if (!result) {
+  fs.access(newFilePath, constants.F_OK, (error) => {
+    if (error) {
+      fs.rename(filePath, newFilePath, (error) => {
+        if (error) {
+          throw new Error('FS operation failed');
+        }
+      });
+    } else {
       throw new Error('FS operation failed');
     }
-  }
+  });
 };
 
-await renameFile();
+await rename();
