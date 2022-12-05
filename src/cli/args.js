@@ -4,8 +4,7 @@ const parseArgs = () => {
   const args = argv
     .reduce((acc, arg, index) => {
       if (index > 1) {
-        console.log(acc, arg);
-        return index % 2 === 0 ? acc + `, ${arg} is ` : acc + arg;
+        return index % 2 === 0 ? acc + `, ${arg.slice(2)} is ` : acc + arg;
       } else {
         return acc;
       }
